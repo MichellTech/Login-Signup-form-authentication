@@ -20,6 +20,24 @@ const getLocalStorage1 = () => {
     return []
   }
 }
+const getLocalStorage2 = () => {
+  let storedpage = localStorage.getItem('displaytext')
+
+  if (storedpage) {
+    return JSON.parse(localStorage.getItem('displaytext'))
+  } else {
+    return []
+  }
+}
+const getLocalStorage3 = () => {
+  let storedpage = localStorage.getItem('displayusername')
+
+  if (storedpage) {
+    return JSON.parse(localStorage.getItem('displayusername'))
+  } else {
+    return []
+  }
+}
 function App() {
   const [form, setForm] = useState(1)
   const [username, setUsername] = useState('')
@@ -36,8 +54,8 @@ function App() {
   const [loginpassword, setLoginpassword] = useState('')
   const [erroremaillogin, setErroremaillogin] = useState('')
   const [errorpasswordlogin, setErrorpasswordlogin] = useState('')
-  const [displayusername, setDisplayusername] = useState('')
-  const [displaytext, setDisplaytext] = useState('')
+  const [displayusername, setDisplayusername] = useState(getLocalStorage3())
+  const [displaytext, setDisplaytext] = useState(getLocalStorage2())
   const [showpassword, setShowpassword] = useState(false)
   const [showpassword1, setShowpassword1] = useState(false)
 
@@ -176,6 +194,12 @@ function App() {
   useEffect(() => {
     localStorage.setItem('page', JSON.stringify(page))
   }, [page])
+  useEffect(() => {
+    localStorage.setItem('displaytext', JSON.stringify(displaytext))
+  }, [displaytext])
+  useEffect(() => {
+    localStorage.setItem('displayusername', JSON.stringify(displayusername))
+  }, [displayusername])
 
   return (
     <>
@@ -391,6 +415,9 @@ function App() {
           </div>
         </div>
       ) : (
+        ''
+      )}
+      {page === 2 ? (
         // home page
         <div className='min-h-screen flex justify-center items-center  font-sans px-6  '>
           {/* content */}
@@ -417,13 +444,13 @@ function App() {
             </p>
             <div className='flex justify-center items-center space-x-4'>
               <button
-                className='bg-white text-veryLightGray font-bold px-6 py-1 rounded-sm cursor-pointer'
+                className='bg-white text-veryLightGray font-bold px-3 md:px-6 py-1 rounded-sm cursor-pointer'
                 onClick={() => handlelogout()}
               >
                 Log Out
               </button>
               <button
-                className='bg-softRed text-veryLightGray font-bold px-6 py-1 rounded-sm cursor-pointer'
+                className='bg-softRed text-veryLightGray font-bold px-3 md:px-6 py-1 rounded-sm cursor-pointer'
                 onClick={() => handledelete()}
               >
                 Delete Account
@@ -431,7 +458,220 @@ function App() {
             </div>
           </div>
         </div>
+      ) : (
+        ''
       )}
+      {/* on load */}
+      // login/sign up
+      <div className='min-h-screen flex justify-center items-center backedground font-sans  '>
+        {/* form */}
+        <div className='bg-white rounded-sm shadow-sm shadow-white px-6 py-8 flex flex-col justify-center items-center space-y-8 xl:space-y-6 w-8/12 sm:w-8/12 md:w-6/12 xl:w-5/12 my-4 '>
+          {/* welcocome message */}
+          <div className='flex flex-col justify-center items-center space-y-2'>
+            {/* logo */}
+            <div>
+              <img src={logo} alt='' />
+            </div>
+            {/* welcome text */}
+            {/* <h1 className='text-xs max-w-xs'>
+              Welcome to Digital Boost platform
+            </h1> */}
+          </div>
+          {/* header */}
+          <div className='flex justify-center items-start gap-14 w-full '>
+            {/* sign up */}
+            <div onClick={() => setForm(1)} className='cursor-pointer'>
+              <h1 className='font-bold text-lg'>Sign Up</h1>
+              {form === 1 ? (
+                <div className='border mt-1 border-b-1 border-softRed '></div>
+              ) : (
+                ''
+              )}
+            </div>
+            {/* login */}
+            <div onClick={() => setForm(2)} className='cursor-pointer'>
+              <h1 className='font-bold text-lg'>Login</h1>
+              {form === 2 ? (
+                <div className='border mt-1 border-b-1 border-softRed '></div>
+              ) : (
+                ''
+              )}
+            </div>
+          </div>
+          {/* form details */}
+          {form === 1 ? (
+            //sign up form
+            <form className=' w-full' onSubmit={handlesignup}>
+              <div className='space-y-3 md:space-y-4 max-w-xs mx-auto'>
+                {/* user name */}
+                <div className='flex flex-col gap-2'>
+                  <label htmlFor='username' className='text-sm'>
+                    Username
+                  </label>
+                  <input
+                    type='text'
+                    placeholder='Input your username'
+                    className={`border-blue ${
+                      errorusername ? 'border-red-500 border-2' : ''
+                    } border px-2 py-1 outline-veryLightGray text-xs`}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                  <p className='text-xs text-red-500'>{errorusername}</p>
+                </div>
+                {/* Email name */}
+                <div className='flex flex-col gap-2'>
+                  <label htmlFor='email' className='text-sm'>
+                    Email Address
+                  </label>
+                  <input
+                    type='email'
+                    placeholder='Input your Email address '
+                    autoComplete='email'
+                    className={`border-blue ${
+                      erroremail ? 'border-red-500 border-2' : ''
+                    } border px-2 py-1 outline-veryLightGray text-xs`}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <p className='text-xs text-red-500'>{erroremail}</p>
+                </div>
+                {/* password */}
+                <div className='flex flex-col gap-2'>
+                  <div className='flex justify-between items-center'>
+                    <label htmlFor='email' className='text-sm'>
+                      Password
+                    </label>
+                    <div className='flex justify-center items-center gap-1'>
+                      <input
+                        type='checkbox'
+                        className=''
+                        onClick={() => setShowpassword(!showpassword)}
+                      />
+                      <h1 className='text-xs'>show password</h1>
+                    </div>
+                  </div>
+
+                  <input
+                    type={showpassword ? 'text' : 'password'}
+                    placeholder='Input your password '
+                    className={`border-blue ${
+                      errorpassword ? 'border-red-500 border-2' : ''
+                    } border px-2 py-1 outline-veryLightGray text-xs`}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <p className='text-xs text-red-500'>{errorpassword}</p>
+                </div>
+                {/* confirm  password */}
+                <div className='flex flex-col gap-2'>
+                  <label htmlFor='email' className='text-sm'>
+                    Confirm Password
+                  </label>
+                  <input
+                    type={showpassword ? 'text' : 'password'}
+                    placeholder='Confirm your password '
+                    className={`border-blue ${
+                      errorpassword1 ? 'border-red-500 border-2' : ''
+                    } border px-2 py-1 outline-veryLightGray text-xs`}
+                    value={password1}
+                    onChange={(e) => setPassword1(e.target.value)}
+                  />
+                  <p className='text-xs text-red-500'>{errorpassword1}</p>
+                </div>
+                {/* submit */}
+                <button
+                  type='submit'
+                  className='bg-softRed text-white text-sm px-4 rounded-md shadow py-2 flex justify-center items-center mx-auto '
+                >
+                  Sign up
+                </button>
+              </div>
+            </form>
+          ) : (
+            // login
+            <form className=' w-full' onSubmit={handlelogin}>
+              <div className='space-y-6 max-w-xs mx-auto'>
+                {/* Email name */}
+                <div className='flex flex-col gap-2'>
+                  <label htmlFor='email' className='text-sm'>
+                    Email Address
+                  </label>
+                  <input
+                    type='email'
+                    placeholder='Input your Email address '
+                    className={`border-blue ${
+                      erroremaillogin ? 'border-red-500 border-2' : ''
+                    } border px-2 py-1 outline-veryLightGray text-xs`}
+                    value={loginemail}
+                    onChange={(e) => setLoginemail(e.target.value)}
+                  />
+                  <p className='text-xs text-red-500'>{erroremaillogin}</p>
+                </div>
+                {/* password */}
+                <div className='flex flex-col gap-2'>
+                  <div className='flex justify-between items-center'>
+                    <label htmlFor='email' className='text-sm'>
+                      Password
+                    </label>
+                    <div className='flex justify-center items-center gap-1'>
+                      <input
+                        type='checkbox'
+                        className=''
+                        onClick={() => setShowpassword1(!showpassword1)}
+                      />
+                      <h1 className='text-xs'>show password</h1>
+                    </div>
+                  </div>
+                  <input
+                    type={showpassword1 ? 'text' : 'password'}
+                    placeholder='Input your password '
+                    className={`border-blue ${
+                      errorpasswordlogin ? 'border-red-500 border-2' : ''
+                    } border px-2 py-1 outline-veryLightGray text-xs`}
+                    value={loginpassword}
+                    onChange={(e) => setLoginpassword(e.target.value)}
+                  />
+                  <p className='text-xs text-red-500'>{errorpasswordlogin}</p>
+                </div>
+                {/* submit */}
+                <button
+                  type='submit'
+                  className='bg-softRed text-white text-sm px-4 rounded-md shadow py-2 flex justify-center items-center mx-auto '
+                >
+                  Login
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* footer */}
+          <div>
+            {form === 1 ? (
+              <h1 className='text-xs'>
+                Already have an account ?{' '}
+                <span
+                  className='underline cursor-pointer'
+                  onClick={() => setForm(2)}
+                >
+                  Login
+                </span>
+              </h1>
+            ) : (
+              <h1 className='text-xs'>
+                Don't have an account ?
+                <span
+                  className='underline cursor-pointer'
+                  onClick={() => setForm(1)}
+                >
+                  {' '}
+                  Sign Up
+                </span>
+              </h1>
+            )}
+          </div>
+        </div>
+      </div>
     </>
   )
 }
