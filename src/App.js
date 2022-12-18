@@ -415,9 +415,6 @@ function App() {
           </div>
         </div>
       ) : (
-        ''
-      )}
-      {page === 2 ? (
         // home page
         <div className='min-h-screen flex justify-center items-center  font-sans px-6  '>
           {/* content */}
@@ -458,12 +455,16 @@ function App() {
             </div>
           </div>
         </div>
-      ) : (
-        ''
       )}
       {/* on load */}
       // login/sign up
-      <div className='min-h-screen flex justify-center items-center backedground font-sans  '>
+      <div
+        className={`${
+          page === 2
+            ? 'hidden'
+            : ' min-h-screen flex justify-center items-center backedground font-sans'
+        } `}
+      >
         {/* form */}
         <div className='bg-white rounded-sm shadow-sm shadow-white px-6 py-8 flex flex-col justify-center items-center space-y-8 xl:space-y-6 w-8/12 sm:w-8/12 md:w-6/12 xl:w-5/12 my-4 '>
           {/* welcocome message */}
