@@ -58,6 +58,7 @@ function App() {
   const [displaytext, setDisplaytext] = useState(getLocalStorage2())
   const [showpassword, setShowpassword] = useState(false)
   const [showpassword1, setShowpassword1] = useState(false)
+  const [show, setShow] = useState(0)
 
   // handling login
   const handlesignup = (e) => {
@@ -200,7 +201,14 @@ function App() {
   useEffect(() => {
     localStorage.setItem('displayusername', JSON.stringify(displayusername))
   }, [displayusername])
-
+  useEffect(() => {
+    if (page === []) {
+      setPage(1)
+    }
+  }, [page])
+  console.log(username)
+  console.log(page)
+  console.log(show)
   return (
     <>
       {page === 1 ? (
@@ -257,7 +265,9 @@ function App() {
                         errorusername ? 'border-red-500 border-2' : ''
                       } border px-2 py-1 outline-veryLightGray text-xs`}
                       value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      onChange={(e) =>
+                        setUsername(e.target.value.toLowerCase())
+                      }
                     />
                     <p className='text-xs text-red-500'>{errorusername}</p>
                   </div>
@@ -274,7 +284,7 @@ function App() {
                         erroremail ? 'border-red-500 border-2' : ''
                       } border px-2 py-1 outline-veryLightGray text-xs`}
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value.toLowerCase())}
                     />
                     <p className='text-xs text-red-500'>{erroremail}</p>
                   </div>
@@ -346,7 +356,9 @@ function App() {
                         erroremaillogin ? 'border-red-500 border-2' : ''
                       } border px-2 py-1 outline-veryLightGray text-xs`}
                       value={loginemail}
-                      onChange={(e) => setLoginemail(e.target.value)}
+                      onChange={(e) =>
+                        setLoginemail(e.target.value.toLowerCase())
+                      }
                     />
                     <p className='text-xs text-red-500'>{erroremaillogin}</p>
                   </div>
@@ -461,9 +473,9 @@ function App() {
       {/* on load */}
       <div
         className={`${
-          page === 2 && 1
-            ? 'hidden'
-            : ' min-h-screen flex justify-center items-center backedground font-sans'
+          page == ''
+            ? ' min-h-screen flex justify-center items-center backedground font-sans'
+            : 'hidden'
         } `}
       >
         {/* form */}
@@ -517,7 +529,7 @@ function App() {
                       errorusername ? 'border-red-500 border-2' : ''
                     } border px-2 py-1 outline-veryLightGray text-xs`}
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value.toLowerCase())}
                   />
                   <p className='text-xs text-red-500'>{errorusername}</p>
                 </div>
@@ -534,7 +546,7 @@ function App() {
                       erroremail ? 'border-red-500 border-2' : ''
                     } border px-2 py-1 outline-veryLightGray text-xs`}
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value.toLowerCase())}
                   />
                   <p className='text-xs text-red-500'>{erroremail}</p>
                 </div>
@@ -606,7 +618,9 @@ function App() {
                       erroremaillogin ? 'border-red-500 border-2' : ''
                     } border px-2 py-1 outline-veryLightGray text-xs`}
                     value={loginemail}
-                    onChange={(e) => setLoginemail(e.target.value)}
+                    onChange={(e) =>
+                      setLoginemail(e.target.value.toLowerCase())
+                    }
                   />
                   <p className='text-xs text-red-500'>{erroremaillogin}</p>
                 </div>
