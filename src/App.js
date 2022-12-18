@@ -414,7 +414,7 @@ function App() {
             </div>
           </div>
         </div>
-      ) : (
+      ) : page === 2 ? (
         // home page
         <div className='min-h-screen flex justify-center items-center  font-sans px-6  '>
           {/* content */}
@@ -455,12 +455,13 @@ function App() {
             </div>
           </div>
         </div>
+      ) : (
+        ''
       )}
       {/* on load */}
-      // login/sign up
       <div
         className={`${
-          page === 2 || 1
+          page === 2 && 1
             ? 'hidden'
             : ' min-h-screen flex justify-center items-center backedground font-sans'
         } `}
