@@ -460,7 +460,7 @@ function App() {
       // login/sign up
       <div
         className={`${
-          page === 2
+          page === 2 || 1
             ? 'hidden'
             : ' min-h-screen flex justify-center items-center backedground font-sans'
         } `}
